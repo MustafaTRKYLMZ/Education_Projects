@@ -1,10 +1,15 @@
 import React from 'react'
+/*
+import Header from './components/Header'
 
-  const Header = ({ course }) => {
-    return (
-      <h2>{course.name}</h2>
-    )
-  }
+*/
+const Header = ({ course }) => {
+  return (
+    <h2>{course.name}</h2>
+  )
+}
+
+
   
   
   const Total = ({ course }) => {
