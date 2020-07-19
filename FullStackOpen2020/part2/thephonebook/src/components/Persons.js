@@ -4,11 +4,14 @@ import Person from './Person'
 
     
 
-const Persons = ({ persons, filter }) => {
+const Persons = ({ persons, filter, setPersons, setMessage  }) => {
     return (
       <ul>
         {persons.filter(e => e.name.toLowerCase().includes(filter.toLowerCase())).map(person =>
-          <Person key={person.name} person={person}/>
+          <Person key={person.name} person={person}
+          persons={persons}
+          setPersons={setPersons}
+          setMessage={setMessage}/>
         )}
       </ul>
     )
