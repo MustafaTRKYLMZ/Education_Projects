@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2 >Phonebook</h2>
       <Notification message={message} />
       <Filter filter={filter} setFilter={setFilter} />
       <h2>Add a new</h2>

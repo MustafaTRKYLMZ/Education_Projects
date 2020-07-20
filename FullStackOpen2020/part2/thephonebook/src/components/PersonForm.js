@@ -12,7 +12,7 @@ const PersonForm = ({persons,setPersons,setMessage}) => {
         setMessage({text:message, class:'info'})
         setTimeout(() => {
           setMessage(null)
-        }, 3000)      
+        }, 5000)      
       }
 
 
@@ -60,7 +60,7 @@ const PersonForm = ({persons,setPersons,setMessage}) => {
             </div>
             <div>
                 number: <input value={newNumber} onChange={handleNumberChange}/>
-            </div>
+            </div>  
             <div>
                 <button type="submit">add</button>
             </div>

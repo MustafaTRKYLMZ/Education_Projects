@@ -1,5 +1,6 @@
 import React from 'react'
 import personService from '../services/personService'
+import '../index.css'
 
 const Person = ({ person,persons,setPersons,setMessage}) => {
 
@@ -9,21 +10,24 @@ const Person = ({ person,persons,setPersons,setMessage}) => {
         if (window.confirm (`Delete ${person.name}?`)) {
             personService
                 .deleteIt(person.id).then(response => {
-                    setMessage({text:`Deleted '${person.name}'`, class:'info'})
-                })
+                    setMessage({text:`Deleted '${person.name}'`})
+                })  
                 .catch(error => {
                     setMessage({text:`Information of '${person.name}' has already been removed from server`,
-                                class:'error'})
+                   className:'error'})
                 })   
             setPersons(persons.filter(p => p.id !== id))
             setTimeout(() => {
               setMessage(null)
-            }, 3000)            
+            }, 5000)            
         }
     }
 
-    return <>{person.name}{": "}{person.number}<button onClick={() => delPerson(person.id)}>Delete</button><br></br></>
-      
+    return  ( 
+        <li className='person'>
+            {person.name} {person.number} <button onClick={() => delPerson(person.id)}>Delete</button>
+        </li>
+    )
     }
 
 export default Person
