@@ -104,7 +104,16 @@ test('empty title causes error', async () => {
     author: 'Mustafa',
     url: 'https://google.com/',
   }
-  await MissingProperty(newBlogWithoutTitle)
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogWithoutTitle)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsInDb = await helper.blogsInDb()
+  expect(blogsInDb).toHaveLength(helper.Blogstest.length)
+  
 })
 
 test('empty url causes error', async () => {
