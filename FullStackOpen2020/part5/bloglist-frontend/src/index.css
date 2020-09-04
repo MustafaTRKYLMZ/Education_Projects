@@ -20,6 +20,12 @@ font-size: 15px;
   font-style:bold;
   font-size: 15px;
 }
+.removeButton{
+  color: rgb(230, 17, 177);
+  padding-top: 3px;
+  font-style:bold;
+  font-size: 12px;
+}
 .butonCreate {
   color: blue;
   padding-top: 3px;
