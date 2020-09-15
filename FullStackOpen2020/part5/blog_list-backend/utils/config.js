@@ -4,7 +4,7 @@ let PORT = process.env.PORT
 let MONGODB_URI = process.env.MONGODB_URI
 let SECRET = process.env.SECRET
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'e2e') {
   MONGODB_URI = process.env.TEST_MONGODB_URI
 }
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
-import loginService from './services/login' 
+import loginService from './services/login'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
@@ -15,7 +15,7 @@ const App = () => {
   const [infoMessage,setInfoMessage]=useState(null)
   const blogFormRef = useRef()
 
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
@@ -32,7 +32,7 @@ const App = () => {
     }
     blogService.getAll().then(blogs =>
       setBlogsSort( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
-   
+
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -57,26 +57,29 @@ const App = () => {
         setTimeout(() => {
           setInfoMessage(null)
         }, 5000)
-       
+
       })
   }
 
   const handleLogin = async (event) => {
+     console.log('Wrong pasword')
     event.preventDefault()
     try {
       const user = await loginService.login({
         username, password,
       })
 
-     window.localStorage.setItem(
-       'loggedBlogappUser', JSON.stringify(user)
-      ) 
-     blogService.setToken(user.token)
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
+
     } catch (exception) {
-      setErrorMessage('username or password wrong')
+      setErrorMessage({ text: 'username or password wrong', class: 'error' })
+
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -85,7 +88,7 @@ const App = () => {
 
   const loginForm = () => (
     <Togglable buttonLabel='login'>
-      <LoginForm 
+      <LoginForm
         username={username}
         password={password}
         handleUsernameChange={({ target }) => setUsername(target.value)}
@@ -94,39 +97,83 @@ const App = () => {
       />
     </Togglable>
   )
-  
-   
+
+
   const blogForm = () => (
     <Togglable buttonLabel='new Blog' ref={blogFormRef}>
       <BlogForm createBlog={addBlog} />
-   </Togglable>
+    </Togglable>
   )
-  const logOut=()=>{
+  const logOut=() => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
     blogService.setToken(user.token)
   }
 
+
+
+  const handleLike = (id) => {
+    const blogLikes = blogs.find(b => b.id === id)
+    blogService.update({
+      id: blogLikes.id,
+      user: blogLikes.user,
+      url: blogLikes.url,
+      title: blogLikes.title,
+      author: blogLikes.author,
+      likes: blogLikes.likes + 1
+    })
+      .then(updatedBlog => {
+        let newBlogs = [...blogs]
+        newBlogs[blogs.indexOf(blogLikes)] = updatedBlog
+
+        setBlogs(newBlogs.sort((a, b) => b.likes - a.likes))
+      })
+      .catch(error => {
+        setErrorMessage({ text: `${error.response.data.error}`, class: 'error' })
+      })
+  }
+
+  const deleteBlog=(id) => {
+
+    const blogDelete = blogs.find(b => b.id === id)
+    if (window.confirm(`Do you want to delete '${blogDelete.title}' by '${blogDelete.author}'?`)) {
+      blogService
+        // eslint-disable-next-line no-unused-vars
+        .deleteOneBlog(id).then(response => {
+          setErrorMessage({ text: `Deleted ${blogDelete.title} by ${blogDelete.author}`, class: 'info' })
+          setBlogs(blogs.filter(p => p.id !== id).sort((a, b) => b.likes - a.likes))
+
+        })
+        .catch(error => {
+          setErrorMessage({ text: `${error.response.data.error}`, class: 'error' })
+        })
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+    }
+
+
+  }
+
   return (
     <div>
       <div>
-         <h2 >Blog Aplication</h2>
+        <h2 >Blog Application</h2>
       </div>
-     
+
       <Notification message={errorMessage} />
       <Info message={infoMessage} />
       {user === null ?
         loginForm() :
-      <div>
-      <p className='login'>{user.name} logged in  <button className='buton' onClick={logOut}>logout</button></p>
-        {blogForm()}
-    </div>
-    }
+        <div>
+          <p className='login'>{user.name} logged in  <button className='buton' onClick={logOut}>logout</button></p>
+          {blogForm()}
+        </div>
+      }
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog}  blogs={blogs} setBlogs={setBlogs} setMessage={setErrorMessage} user={user} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} deleteBlog={deleteBlog} user={user} />
       )}
     </div>
-    
   )
 }
 

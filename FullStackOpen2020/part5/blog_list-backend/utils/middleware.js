@@ -31,6 +31,10 @@ const errorHandler = (error, request, response, next) => {
     return response.status(401).json({
       error: 'invalid token'
     })
+  }else if (error.name ==='invalid username or password'){
+    return response.status(401).json({
+      error:'invalid username or password'
+    })
   }
   next(error)
 }
