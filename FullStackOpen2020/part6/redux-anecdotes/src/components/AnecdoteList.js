@@ -18,14 +18,16 @@ function Anecdote({ anecdote, handleClick}) {
 
 const Anecdotes = (props) => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state =>//state.anecdotes)
-      state.anecdotes.filter(n =>n.content.toLowerCase().includes(state.filter.toLowerCase())))
+  const anecdotes = useSelector(state =>state.anecdotes)
+      //state.anecdotes.filter(n =>n.content.toLowerCase().includes(state.filter.toLowerCase())))
 
 
 
 const voteUpdate=(id)=>{
-  dispatch(voteAdd(id))
-  dispatch(newNotification(`Voted anecdote '${anecdotes.find(a => a.id === id).content}'`))
+  //dispatch(voteAdd(id))
+  const anecdote= anecdotes.find(n => n.id ===id)
+  dispatch(voteAdd({...anecdote,votes:anecdote.votes+1}))
+  dispatch(newNotification(`you anecdote '${anecdotes.find(a => a.id === id).content}'`))
   setTimeout(() => {
     dispatch(clearNotification())
   }, 5000)
