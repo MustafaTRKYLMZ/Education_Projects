@@ -1,27 +1,36 @@
 
   
-const notificationReducer = (state='', action) => {
+const notificationReducer = (state={content:'', messageTime:0}, action) => {
     switch (action.type) {
       case 'NEW_NOTIFICATION':
-        return action.content
+        return {content:action.content,messageTime:action.messageTime}
       case 'CLEAR_NOTIFICATION':
-        return ''
+        if (action.msgTime === state.msgTime) {
+          return { content: '', messageTime: 0 }
+        } else {
+          return state
+        }
       default:
         return state
     }
   }
-  
-  export const newNotification = (content) => {
-    return {
+  const timeManage = time => new Promise(ls => setTimeout(ls, time));
+
+  export const makeNotification = (content, timeSc) => {
+    return async dispatch => {
+      const messageTime = new Date().getTime()
+      dispatch({
         type: 'NEW_NOTIFICATION',
-        content
-      }
-  }
-  
-  export const clearNotification = () => {
-    return {
-      type: 'CLEAR_NOTIFICATION'
+        content,
+        messageTime
+      })
+      await timeManage(timeSc * 1000);
+      dispatch({
+        type: 'CLEAR_NOTIFICATION',
+        messageTime
+      })
     }
   }
+  
   
   export default notificationReducer
