@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNpbmFzaSIsImlkIjoiNWY0MTBlMmIwNTNjYjNiNDZjZjhhYThiIiwiaWF0IjoxNTk4MTAwNTYyfQ.4NYXo2RMgdV2M7PelrhHN0s9BoqaQYc39CRbuQZzwQ8
+
+{
+    "title": "My last Book",
+    "author":"With Token Blogs",
+    "url":"https://english-e-reader.net/onlinereader/hobbit-or-there-and-back-again-j-r-r-tolkien",
+    "likes":10
+}
+
