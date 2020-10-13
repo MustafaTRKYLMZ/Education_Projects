@@ -1,64 +1,48 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Table, Form, Button } from 'react-bootstrap'
 
+const BlogForm = ({ createNewBlog }) => {
 
-const BlogForm = ({ createBlog }) => {
-  const [title,setTitle]=useState([])
-  const [author,setAuthor]=useState([])
-  const [url,setUrl]=useState([])
 
   const addBlog = (event) => {
     event.preventDefault()
-    createBlog ({
-      title: title,
-      author:author,
-      url:url
-    })
-    setAuthor('')
-    setTitle('')
-    setUrl('')
+    const title= event.target.title.value
+    const author=event.target.author.value
+    const url= event.target.url.value
+    event.target.title.value = ''
+    event.target.author.value = ''
+    event.target.url.value = ''
+    createNewBlog ({ title, author, url })
   }
 
   return (
     <div>
       <h2>Create a new blog</h2>
-
-      <form onSubmit={addBlog}>
-        <div>
-        title:
-          <input
+      <Form onSubmit={addBlog}>
+        <Form.Group>
+          <Form.Label>title:</Form.Label>
+          <Form.Control
             id="title"
             type="text"
-            value={title}
             name="title"
-            onChange={({ target }) => setTitle(target.value)}
           />
-        </div>
-        <div>
-        author:
-          <input
+          <Form.Label>author:</Form.Label>
+          <Form.Control
             id="author"
             type="text"
-            value={author}
             name="author"
-            onChange={({ target }) => setAuthor(target.value)}
           />
-        </div>
-        <div>
-        url:
-          <input
+          <Form.Label>url:</Form.Label>
+          <Form.Control
             id="url"
             type="text"
-            value={url}
             name="url"
-            onChange={({ target }) => setUrl(target.value)}
           />
-        </div>
-
-        <button id="createButton" type="submit" className='butonCreate'>create</button>
-      </form>
+          <Button id="createButton" type="submit" variant="primary">create</Button>
+        </Form.Group>
+      </Form>
     </div>
   )
-
 }
 
 export default BlogForm

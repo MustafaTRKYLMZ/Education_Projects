@@ -10,6 +10,12 @@ const notificationReducer = (state={content:'', messageTime:0}, action) => {
         } else {
           return state
         }
+      /*  case 'ERROR_NOTIFICATION':
+          if (action.msgTime === state.msgTime) {
+            return { content: '', messageTime: 0 }
+          } else {
+            return state
+          }*/
       default:
         return state
     }
@@ -31,6 +37,16 @@ const notificationReducer = (state={content:'', messageTime:0}, action) => {
       })
     }
   }
-  
+  /*export const erorNotification =(content,timeSc) =>{
+    return async dispatch =>{
+      const messageTime = new Date().getTime()
+      dispatch({
+        type:'ERROR_NOTIFICATION',
+        content,
+        messageTime
+
+      })
+    }
+  }*/
   
   export default notificationReducer

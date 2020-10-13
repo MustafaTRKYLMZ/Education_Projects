@@ -1,12 +1,7 @@
-POST http://localhost:3001/api/blogs
+POST http://localhost:3001/api/comments
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNpbmFzaSIsImlkIjoiNWY0MTBlMmIwNTNjYjNiNDZjZjhhYThiIiwiaWF0IjoxNTk4MTAwNTYyfQ.4NYXo2RMgdV2M7PelrhHN0s9BoqaQYc39CRbuQZzwQ8
 
 {
-    "title": "My last Book",
-    "author":"With Token Blogs",
-    "url":"Çok kısa olmalı",
-    "likes":10,
-    "comment":"I think so"
+    "name": "It was good",  
 }
-

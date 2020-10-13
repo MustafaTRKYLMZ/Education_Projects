@@ -1,53 +1,37 @@
-import React, { useState, useEffect } from 'react'
-import blogService from '../services/blogs'
+import React, { useEffect } from 'react'
+import { Navbar, Nav } from 'react-bootstrap'
 
 import BlogFace from '../components/BlogFace'
 import Login from '../components/Login'
 import Register from '../components/Register'
 import {
-  BrowserRouter as Router,
-  Switch, Route, Link, useRouteMatch
+  Switch, Route, Link, useRouteMatch,useHistory
 } from 'react-router-dom'
-
 import Users from '../components/Users'
 import { User }  from '../components/Users'
 import Blogs from '../components/Blogs'
-import axios from 'axios'
 
+import { stayLogin } from '../reducers/userReducer'  
+import { initializeBlogs } from '../reducers/blogReducer'
+import { initialiseUsers } from '../reducers/userListReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { logOutUser } from '../reducers/userReducer'
 
 
 const Menu = ({ setErrorMessage, setInfoMessage }) => {
-  const [user, setUser] = useState(null)
-  const [blogs, setBlogs] = useState([])
-  const [users, setUsers] = useState([])
-
-  console.log(' App users component starting')
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const loggedUser = JSON.parse(loggedUserJSON)
-      const user = JSON.parse(loggedUserJSON)
-      setUser(loggedUser)
-      console.log('After the login////////////////////////////////')
-
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-    )
-  }, [])
+  const dispatch = useDispatch()
+  const blogs =useSelector(state => state.blogs)//((a, b) => b.likes - a.likes))
+  const users = useSelector (state => state.users)
+  const user = useSelector(state =>  state.user)
 
 
   useEffect(() => {
-    axios
-      .get('/api/users')
-      .then(response => {
-        setUsers(response.data)
 
-      })
-  }, [])
+    dispatch(stayLogin())
+    dispatch(initializeBlogs())//blogStore.sort((a, b) => b.likes - a.likes))
+    dispatch(initialiseUsers())
+  }, [dispatch])
+
 
   const matchFirst = useRouteMatch('/users/:id')
   const userFind = matchFirst
@@ -58,50 +42,65 @@ const Menu = ({ setErrorMessage, setInfoMessage }) => {
     padding: 5
   }
 
-  const matchSecond = useRouteMatch('/blogs/:id')
-  const blog = matchSecond
-    ? blogs.find(blog => blog.id === matchSecond.params.id)
-    : null
 
   const LogOut = () => {
-
-    window.localStorage.removeItem('loggedBlogappUser')
-    setUser(null)
-    blogService.setToken(user.token)
+    try {
+      dispatch(logOutUser())
+    } catch (e) {
+      setErrorMessage(e,'Logout unsuccesfull')
+    }
   }
 
-  return (
-    <Router>
-      <div>
-        {user? <Link style={padding} to="/blogs">blogs</Link>:''}
-        {user?<Link style={padding} to="/users">users</Link>:''}
-        {user? <em>{user.username} logged in <button className='buton' onClick={LogOut}>logout</button> </em>
-          :
-          <Link style={padding} to="/login">login</Link>}
-        {user? '':<Link style={padding} to="/register">register</Link>}
-      </div>
+  const matchSecond = useRouteMatch('/blogs/:id')
+  const blog = matchSecond? blogs.find(blog => blog.id === matchSecond.params.id)
+    : null
 
+
+  return (
+    <div>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#" as="span">
+              {user? <Link style={padding} to="/blogs">blogs</Link>:''}
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              {user?<Link style={padding} to="/users">users</Link>:''}
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              {user? <em>{user.username} logged in <button className='buton' onClick={LogOut}>logout</button> </em>
+                :
+                <Link style={padding} to="/login">login</Link>}
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              {user? '':<Link style={padding} to="/register">register</Link>}
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
       <Switch>
         <Route path="/blogs/:id">
-          <BlogFace blog={blog} user={user} blogs={blogs} setBlogs={setBlogs} setErrorMessage={setErrorMessage} />
+          <BlogFace blog={blog} user={user} setErrorMessage={setErrorMessage} />
         </Route>
         <Route path="/users/:id">
           <User userFind={userFind} user={user}/>
         </Route >
         <Route path="/login">
-          <Login setUser={setUser} setErrorMessage={setErrorMessage} user={user} />
+          <Login setErrorMessage={setErrorMessage} user={user} />
         </Route>
         <Route path="/register">
           <Register />
         </Route>
         <Route path="/blogs">
-          <Blogs blogs={blogs} setBlogs={setBlogs} setErrorMessage={setErrorMessage} setInfoMessage={setInfoMessage} user={user} />
+          <Blogs  setErrorMessage={setErrorMessage} setInfoMessage={setInfoMessage} user={user} />
         </Route>
         <Route path="/users">
-          <Users users={users} user={user}/>
+          <Users user={user}/>
         </Route>
+       
       </Switch>
-    </Router>
+    </div>
   )
 }
 export default Menu

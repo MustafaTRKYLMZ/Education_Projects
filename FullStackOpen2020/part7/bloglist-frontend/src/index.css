@@ -2,17 +2,33 @@ h2 {
   color: green;
   font-style: bold;
 }
+h1 {
+  color: orange;
+  font-style: bold;
+}
 
 .blog {
 color: grey;
 padding-top: 3px;
 font-size: 15px;
 }
+.icon {
+  padding: 10px;
+  background: rgb(178, 202, 221);
+  color: red;
+  min-width: 10px;
+  text-align: left;
+}
 .login {
   color: blue;
   padding-top: 3px;
   font-style:bold;
   font-size: 15px;
+}
+@media print {
+  .pdf-container {
+    display: none;
+  }
 }
 .buton {
   color: orangered;

@@ -6,14 +6,14 @@ import loginService from '../services/login'
 import LoginForm from './LoginForm'
 import Togglable from './Togglable'
 import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUser } from '../reducers/userReducer'
+import { makeNotification } from '../reducers/notificationreducer'
 
 
-
-
-
-
-const Login = ({ setUser, setErrorMessage, user } ) => {
-
+const Login = ({ setErrorMessage } ) => {
+  const dispatch = useDispatch()
+  const user =useSelector(state => state.user)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -24,17 +24,9 @@ const Login = ({ setUser, setErrorMessage, user } ) => {
     console.log('Handle Login')
     event.preventDefault()
     try {
-      const user = await loginService.login({
-        username, password,
-      })
-
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
+      const user = await dispatch(loginUser({ username, password }))
+      dispatch(makeNotification(`Welcome ${user.username}`,5)
       )
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
       history.push('/blogs')
 
     } catch (exception) {
@@ -65,7 +57,6 @@ const Login = ({ setUser, setErrorMessage, user } ) => {
       <div>
         {user === null ?
           loginForm() :''
-
         }
       </div>
     </div>

@@ -1,11 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-
-
-
+import { useSelector } from 'react-redux'
+import { Table } from 'react-bootstrap'
 
 export const User = ({ userFind,user }) => {
+  console.log('User ',userFind)
   if (!userFind) {
     return null
   }
@@ -14,7 +13,7 @@ export const User = ({ userFind,user }) => {
     <div>
       <div>
         {user?
-          <h1>{userFind.username}</h1>:''
+          <h2>{userFind.username}</h2>:''
         }
       </div>
       <div>
@@ -22,27 +21,27 @@ export const User = ({ userFind,user }) => {
           <h1>added blogs</h1>:''
         }
       </div>
-      <div>
-        <ul>{user?
-          <ul>
-            {userFind.blogs.map(blog => <li key={blog.id}>  {blog.title}</li>)}
-          </ul>:''
+      <Table striped>
+        {user? <tbody>
+          {userFind.blogs.map(blog =>
+            <tr key={blog.id}> <td>  {blog.title}</td></tr>)}
+        </tbody>:''
         }
-        </ul>
-
-      </div>
+      </Table>
     </div>
   )
 
 }
 
-const Users = ({ users,user } ) => {
+const Users = ({ user } ) => {
+
+  const users = useSelector (state => state.users)
 
 
   return (
     <div>
       <h1>Users</h1>
-      {user?<table>
+      {user?<Table striped>
         <thead>
           <tr>
             <td></td>
@@ -56,9 +55,8 @@ const Users = ({ users,user } ) => {
             </tr>
           )}
         </tbody>
-      </table>:''
+      </Table>:''
       }
-
 
     </div>
   )

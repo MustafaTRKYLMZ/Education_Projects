@@ -33,7 +33,23 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 //--------------------------------------
-
+blogsRouter.post('/:id/comments', async (request, response,next) => {
+  const body = request.body
+  const id = request.params.id
+  try{
+    const blog = await Blog.findById(id)
+    const comment = new Comment({
+      content:body.content,
+      blog:blog._id
+    })
+    const savedComment = await comment.save()
+    blog.comments = blog.comments.concat(savedComment._id)
+    await blog.save()
+    response.json(savedComment.toJSON())
+  }catch(error){
+    next(error)
+}
+})
 
 //----------------------------------------------
 blogsRouter.delete('/:id', async (request, response) => {
@@ -73,7 +89,7 @@ blogsRouter.put('/:id', async (request, response) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
-    comments:body.comments,
+  
   }
 
   const updatedBlog = await Blog.findByIdAndUpdate(

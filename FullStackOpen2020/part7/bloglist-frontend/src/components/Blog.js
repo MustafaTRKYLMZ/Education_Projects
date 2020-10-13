@@ -6,14 +6,7 @@ import '../index.css'
 
 const Blog = ({ blog,handleLike, deleteBlog, user }) => {
   const [visible, setVisible] = useState(false)
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
+ 
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -24,24 +17,24 @@ const Blog = ({ blog,handleLike, deleteBlog, user }) => {
 
 
   return (
-    <div className='blog' style={blogStyle} >
-      <div style={hideWhenVisible} key={blog.id}>
+    <div>
+      <tr style={hideWhenVisible} key={blog.id}>
         <Link to={`/blogs/${blog.id}`}> {blog.title} {blog.author}</Link>
         <button className='viewButton' onClick={toggleVisibility}>view </button>
-      </div>
+      </tr>
 
-      <div className='blogHeader' style={showWhenVisible} >{blog.title} by author {blog.author}
+      <tr className='blogHeader' style={showWhenVisible} >{blog.title} by author {blog.author}
         <button className='hideButton'  onClick={toggleVisibility}> hide </button><br/>
-      </div>
+      </tr>
 
-      <div className='blogUrl' style={showWhenVisible} >Adress  : {blog.url} <br/></div>
-      <div className='blogLikes'style={showWhenVisible}>Likes   :  {blog.likes} <button className="likeButton"  onClick={() => handleLike(blog.id)}>like</button><br/></div>
-      <div className='blogName' style={showWhenVisible} >Username: {blog.user.name}<br/></div>
+      <tr className='blogUrl' style={showWhenVisible} >Adress  : {blog.url} <br/></tr>
+      <tr className='blogLikes'style={showWhenVisible}>Likes   :  {blog.likes} <button className="likeButton"  onClick={() => handleLike(blog.id)}>like</button><br/></tr>
+      <tr className='blogName' style={showWhenVisible} >Username: {blog.user.name}<br/></tr>
       {user !== null && user.name === blog.user.name &&
-               <div style={showWhenVisible} >
+               <tr style={showWhenVisible} >
                  <button className='removeButton' onClick={ () => deleteBlog(blog.id)}>Delete</button>
 
-               </div>
+               </tr>
       }
     </div>
   )
