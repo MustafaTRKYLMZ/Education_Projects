@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useLazyQuery } from '@apollo/client'
+import { useApolloClient, useLazyQuery, useSubscription, useQuery } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
-//import { useQuery } from '@apollo/client'
-import { useQuery,useApolloClient } from '@apollo/client';
+
 import {ALL_BOOKS } from './queries'
 import LoginForm from './components/LoginForm'
-import { CURRENT_USER } from './queries'
+import { BOOK_ADDED, CURRENT_USER } from './queries'
 
 
 const App = () => {
@@ -19,6 +18,24 @@ const App = () => {
   const result1 = useQuery(ALL_BOOKS)
   const client = useApolloClient()
 
+
+  const updateCacheWith = (addedBook) => {
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!dataInStore.allBooks.map(b => b.id).includes(addedBook.id)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) }
+      })
+    }
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      notify(`${addedBook.title} added`)
+      updateCacheWith(addedBook)
+    }
+  })
   
   useEffect(() => {
     const token = localStorage.getItem('library-user-token')
@@ -34,8 +51,6 @@ const App = () => {
     }
   }, [currentUserResult.data]) // eslint-disable-line 
 
-
-  
 
   const setNewToken = (newToken) => {
     setToken(newToken)
@@ -62,7 +77,9 @@ const App = () => {
   }
  
    // eslint-disable-next-line react-hooks/rules-of-hooks
-   
+   const handleBookAdded = () => {
+    setPage('authors')
+  }
 
   return (
     <div>
@@ -101,10 +118,9 @@ const App = () => {
       <NewBook setError={notify}
         show={page === 'add'}
       />
-      <LoginForm setError={notify}  setToken={setNewToken}
+      <LoginForm setError={notify}  setToken={setNewToken} handleBookAdded={handleBookAdded}
         show={page === 'login'}
       />
-
     </div>
   )
 }

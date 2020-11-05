@@ -3,8 +3,8 @@ import { useMutation } from '@apollo/client'
 import { EDIT_AUTHOR } from '../queries'
 
 const BirthdayForm = ({ authors, setError }) => {
-    const [name,setName] = useState(null)
-    const [born, setBorn] = useState(null)
+    const [name,setName] = useState(authors[0].name)
+    const [born, setBorn] = useState('')
 
     const [changeBirthday] = useMutation(EDIT_AUTHOR, {
         onError: (error) => {

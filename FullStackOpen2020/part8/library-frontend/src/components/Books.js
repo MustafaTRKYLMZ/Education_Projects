@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
-import { useApolloClient, useLazyQuery, useQuery } from '@apollo/client'
+import { useApolloClient, useLazyQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
 import Genres from './Genres'
 

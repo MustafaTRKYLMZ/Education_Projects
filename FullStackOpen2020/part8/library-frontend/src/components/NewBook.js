@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { ALL_BOOKS,ALL_AUTHORS, CREATE_BOOK } from '../queries'
 
-const NewBook = ({show,setError}) => {
+const NewBook = ({show,setError, handleBookAdded}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -29,7 +29,7 @@ const NewBook = ({show,setError}) => {
         variables: { title, published, author, genres }
       })
     console.log('add book...', title)
-
+    handleBookAdded()
     setTitle('')
     setPublished('')
     setAuthor('')
