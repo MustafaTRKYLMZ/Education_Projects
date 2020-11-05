@@ -15,6 +15,7 @@ const NewBook = ({show,setError}) => {
         console.log(error)
         setError(error.message)
       },
+    
       refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
   })
 

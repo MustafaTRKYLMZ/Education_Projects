@@ -5,12 +5,14 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    minlength: 4
+    minlength: 3
   },
   born: {
     type: Number,
-    required:true,
-    minlength:4
+  },
+  bookCount: {
+    type: Number,
+    default: 0
   },
 })
 

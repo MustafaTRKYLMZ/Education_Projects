@@ -30,7 +30,7 @@ const BirthdayForm = ({ authors, setError }) => {
 
         <form onSubmit={submit}>
             <div>
-            name
+            Name
             <select onChange={handleChange} value={name}>
                 {authors.map(a =>
                 <option key={a.id} value={a.name}>{a.name}</option>
@@ -38,7 +38,7 @@ const BirthdayForm = ({ authors, setError }) => {
             </select>
             </div>
             <div>
-            phone <input
+            Year <input
                 value={born}
                 onChange={({ target }) => setBorn(Number(target.value))}
             />

@@ -8,7 +8,7 @@ const Authors = ({setError,show,}) => {
     if (!show) {
         return null
       }
-
+console.log("authors",result.data)
     if (result.loading) {
         return <div>loading...</div>
       }
@@ -17,26 +17,22 @@ const Authors = ({setError,show,}) => {
     <div>
       <h2>authors</h2>
       <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>
-              born
-            </th>
-            <th>
-              books
-            </th>
-          </tr>
-          {result.data.allAuthors.map(a =>
-            <tr key={a.id}>
-              <td>{a.name}</td>
-              <td>{a.born}</td>
-              <td>{a.bookCount}</td>
-            </tr>
-          )}
+         <tbody>
+         <tr>
+           <th>Name</th>
+           <th>born</th><th></th>
+           <th>books</th>
+         </tr>
+         {result.data.allAuthors.map((a) => (
+           <tr key={a.name}>
+             <td>{a.name}</td>
+             <td>{a.born}</td>
+             <td>{a.bookCount}</td>
+           </tr>
+         ))}
         </tbody>
       </table>
-      <h2>Set Birhday</h2>
+      <h2>Set Birhyear</h2>
       {result.data.allAuthors.length > 0
         ? <BirthdayForm setError={setError} authors={result.data.allAuthors} />
         : null}
