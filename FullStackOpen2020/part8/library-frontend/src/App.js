@@ -115,10 +115,10 @@ const App = () => {
         genreShow={user ? user.favoriteGenre : null}
       />
  
-      <NewBook setError={notify}
+      <NewBook setError={notify} handleBookAdded={handleBookAdded}
         show={page === 'add'}
       />
-      <LoginForm setError={notify}  setToken={setNewToken} handleBookAdded={handleBookAdded}
+      <LoginForm setError={notify}  setToken={setNewToken} 
         show={page === 'login'}
       />
     </div>
