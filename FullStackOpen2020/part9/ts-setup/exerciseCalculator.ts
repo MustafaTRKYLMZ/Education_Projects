@@ -1,3 +1,6 @@
+
+export function ( ) {
+
 interface CalculateValue {
     periodLength: number;
     trainingDays: number;
@@ -95,8 +98,9 @@ interface CalculateValue {
     const { target, days } = parsedArguments(process.argv);
     
     calculateExercises(days, target);
-    
+
   } catch (e) {
     if (e instanceof Error) answer = e.message;
     console.log('Error, something bad happened, message: ', answer);
   }
+}
