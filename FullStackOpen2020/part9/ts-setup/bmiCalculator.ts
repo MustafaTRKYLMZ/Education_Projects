@@ -1,21 +1,22 @@
-export function  bmiCalculat(height: string, weight: string) {
+export const  bmiCalculat= (height: string, weight: string):string => {
 
-    const bmiCalculator = (a: number, b: number) => {
-        if (!a || !b) throw new Error('malformatted parameters');
-        const height = a / 100;
+      let answer = '';
+      try {
+        if (!height || !weight) throw new Error('malformatted parameters');
+        const height = Number(height) / 100;
         const square: number = height * height;
-        const result = b / square;
+        const result = Number(weight) / square;
         if (result <= 15) return 'Severely underweight';
         else if (result <= 16) return 'Underweight';
         else if (result <= 25) return 'Normal (healthy weight)';
-        else return 'Overweight';
+        else answer= 'Overweight';
+      } catch (e:unknown){
+        if(e instanceof Error ) {
+          answer = e.message
+        }
       };
 
-      try {
-        return bmiCalculator(Number(height), Number(weight));
-    } catch (e) {
-      return e.message;
-    }
-  }
+    return answer;
+  };
 
 

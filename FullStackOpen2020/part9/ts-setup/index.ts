@@ -1,6 +1,12 @@
 const express = require( "express" );
-const bodyParser = require("body-parser");
+import bodyParser from "body-parser";
 import { bmiCalculat } from './bmiCalculator';
+import { exerciseCalculator} from './exerciseCalculator'
+
+interface Body {
+  daily_exercises: number[];
+  target: number;
+}
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,6 +27,17 @@ app.get('/bmi',(reg,res) => {
     }
 
 })
+
+app.post('/exercises', (req, res: Response) => {
+  const body = req.body as Body;
+ 
+  const target: number = body.target;
+  const daily_exercises: number[] = body.daily_exercises;
+
+  const answer = exerciseCalculator(daily_exercises, target);
+
+  res.json({ answer });
+});
 
 const PORT = 3002;
 

@@ -1,5 +1,4 @@
 
-export function ( ) {
 
 interface CalculateValue {
     periodLength: number;
@@ -26,7 +25,7 @@ interface CalculateValue {
         throw new TypeError('Provided values were not number!');
       }
     }
-    console.log('Arr : ', Arr);
+   
     const newArr = Arr.map((i) => Number(i));
   
     return {
@@ -36,7 +35,7 @@ interface CalculateValue {
   };
   
   export const calculateExercises = (arry: number[], target: number): CalculateValue => {
-    console.log('Array : ', arry);
+    
     if (!arry || !target) throw new TypeError('parameters missing');
     console.log('TypeOf Array : ', typeof arry);
     if (typeof arry !== 'object' || typeof target !== 'number')
@@ -103,4 +102,3 @@ interface CalculateValue {
     if (e instanceof Error) answer = e.message;
     console.log('Error, something bad happened, message: ', answer);
   }
-}
