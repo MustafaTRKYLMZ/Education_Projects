@@ -1,4 +1,6 @@
 import express from 'express';
+import diagnosesRouter from './routes/diagnoses'
+import patientesRouter from './routes/patients'
 
 var cors = require('cors')
  
@@ -12,6 +14,10 @@ app.get('/api/ping', (_req, res) => {
   res.send('pong');
 });
 
+app.use('/api/diagnoses',diagnosesRouter);
+app.use('/api/patients',patientesRouter);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+//part9.9.'a başlamak üzereyiz. 
