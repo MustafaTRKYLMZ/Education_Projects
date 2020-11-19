@@ -20,4 +20,3 @@ app.use('/api/patients',patientesRouter);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-//part9.9.'a başlamak üzereyiz. 

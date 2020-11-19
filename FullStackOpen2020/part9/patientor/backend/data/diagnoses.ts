@@ -1,4 +1,4 @@
-import { Diagnose } from "../types";
+import { Diagnose } from "../src/types";
 
 const allDiagnoses :Array < Diagnose> =
 

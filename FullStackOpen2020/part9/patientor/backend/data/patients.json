@@ -1,6 +1,3 @@
-import { Patient } from "../types";
-
-const allPatientes :Array < Patient>=
 
 [
     {
@@ -43,5 +40,5 @@ const allPatientes :Array < Patient>=
         "gender": "male",
         "occupation": "Digital evangelist"
     }
-];
-export default allPatientes;
+]
+

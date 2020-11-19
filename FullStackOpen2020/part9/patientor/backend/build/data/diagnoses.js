@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var allDiagnoses = [
+const allDiagnoses = [
     {
         "code": "M24.2",
         "name": "Disorder of ligament",
