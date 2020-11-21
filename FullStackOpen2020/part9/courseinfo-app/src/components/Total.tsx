@@ -1,27 +1,14 @@
 import React from 'react';
+import { coursePart } from '../types'
 
-interface TotalPropsChildren {
-  name: string;
-  exerciseCount: number;
-}
 
-interface TotalProps {
-  courses: TotalPropsChildren[];
-}
-
-const Total = (props: TotalProps) => {
-  const courseParts = props.courses;
-  return (
-    <>
-      <p>
-        Number of exercises{' '}
-        {courseParts.reduce(
-          (carry: number, part) => carry + part.exerciseCount,
-          0
-        )}
-      </p>
-    </>
-  );
-};
+const Total : React.FC<{ courseParts: Array<coursePart> }> = ({ courseParts }) => {
+    return (
+        <p>
+          Number of exercises{" "}
+          {courseParts.reduce((carry, part) => carry + part.exerciseCount, 0)}
+        </p>
+      );
+    };
 
 export default Total
