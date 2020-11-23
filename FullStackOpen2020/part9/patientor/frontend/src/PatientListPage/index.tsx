@@ -1,17 +1,19 @@
-import React from "react";
-import axios from "axios";
-import { Container, Table, Button } from "semantic-ui-react";
+import React from 'react';
+import axios from 'axios';
+import { Container, Table, Button } from 'semantic-ui-react';
 
-import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
-import AddPatientModal from "../AddPatientModal";
-import { Patient } from "../types";
-import { apiBaseUrl } from "../constants";
-import HealthRatingBar from "../components/HealthRatingBar";
-import { useStateValue } from "../state";
+import { PatientFormValues } from '../AddPatientModal/AddPatientForm';
+import AddPatientModal from '../AddPatientModal';
+import { Patient, PatientWithEntries } from '../types';
+import { apiBaseUrl } from '../constants';
+import HealthRatingBar from '../components/HealthRatingBar';
+import { addPatient, setCurrentPatient, useStateValue } from "../state";
+import { useHistory } from "react-router-dom";
 
 const PatientListPage: React.FC = () => {
-  const [{ patients }, dispatch] = useStateValue();
-console.log("Patient ----------,",patients)
+  const [{ patients, patient }, dispatch] = useStateValue();
+  const history = useHistory();
+  console.log('patients :>> ', patients);
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
 
@@ -28,7 +30,7 @@ console.log("Patient ----------,",patients)
         `${apiBaseUrl}/patients`,
         values
       );
-      dispatch({ type: "ADD_PATIENT", payload: newPatient });
+      dispatch(addPatient(newPatient));
       closeModal();
     } catch (e) {
       console.error(e.response.data);
@@ -36,12 +38,27 @@ console.log("Patient ----------,",patients)
     }
   };
 
+  const showDetails = async (id: string) => {
+      if (!patient || patient.id !== id) {
+        try {
+          const { data: patientWithEntriesFromApi } = await axios.get<PatientWithEntries>(
+            `${apiBaseUrl}/patients/${id}`
+          );
+          dispatch(setCurrentPatient(patientWithEntriesFromApi));
+        } catch (e) {
+          console.error(e.response.data);
+          setError(e.response.data);
+        }
+      }
+      history.push(`/patients/${id}`);
+  }
+
   return (
     <div className="App">
       <Container textAlign="center">
         <h3>Patient list</h3>
       </Container>
-      <Table celled>
+      <Table celled selectable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Name</Table.HeaderCell>
@@ -52,7 +69,7 @@ console.log("Patient ----------,",patients)
         </Table.Header>
         <Table.Body>
           {Object.values(patients).map((patient: Patient) => (
-            <Table.Row key={patient.id}>
+            <Table.Row key={patient.id} onClick={() => showDetails(patient.id)}>
               <Table.Cell>{patient.name}</Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
