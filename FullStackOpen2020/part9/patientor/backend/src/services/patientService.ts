@@ -1,6 +1,6 @@
-import patientsData from '../../data/patients'
+import patientsData from '../../data/patients';
 import { v4 as uuid } from 'uuid';
-import toNewPatientEntry from '../utils'
+import toNewPatientEntry from '../utils';
 
 import { Patient, NewPatientEntry } from '../types';
 
@@ -15,7 +15,7 @@ const getEntries = (): Array<Patient> => {
 
 const getPatientData = (id: string): Patient|undefined => {
 ///İt is a problem getting data with ID
-console.log("getting data")
+console.log("getting data");
   const entry = patients.find(d => d.id === id);
   return entry;
 };

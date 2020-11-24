@@ -13,7 +13,7 @@ const parseString =(comment:any):string => {
         throw new Error('Incorrect or missing: ' + comment);
       }
       return comment;
-}
+};
 
 //date line
 const isDate = (date: string): boolean => {
