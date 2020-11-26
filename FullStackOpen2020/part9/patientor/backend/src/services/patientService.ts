@@ -1,8 +1,8 @@
 import patientsData from '../../data/patients';
 import { v4 as uuid } from 'uuid';
-import toNewPatientEntry from '../utils';
+import {toNewPatientEntry} from '../utils';
 
-import { Patient, NewPatientEntry } from '../types';
+import { Patient, NewPatientEntry,Entry } from '../types';
 
 
 let patients: Array<Patient> = patientsData.map(obj => {
@@ -37,11 +37,17 @@ const getNonSensitivePatientes = ():Omit<Patient, 'ssn' | 'entries'>[] => {
     patients = patients.concat(patient);
     return patient;
     };
+    const addEntry = (patient: Patient, newEntry: Entry): Patient => {
+      newEntry.id = uuid();
+      patient.entries = patient.entries.concat(newEntry);
+      return patient;
+    };
 
 export default {
     getNonSensitivePatientes,
     addPatient,
     getEntries,
     getPatientData,
+    addEntry,
 
 };

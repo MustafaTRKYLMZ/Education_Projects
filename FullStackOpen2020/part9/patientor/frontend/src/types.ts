@@ -1,14 +1,10 @@
-export interface Diagnosis {
-  code: string;
-  name: string;
-  latin?: string;
-}
+
 
 export enum Gender {
   Male = 'Male',
   Female = 'Female',
   Other = 'Other'
-}
+};
 export interface SickLeave {
   startDate: string;
   endDate: string;
@@ -76,6 +72,17 @@ export const assertNever = (value: never): never => {
   );
 };
 
+export type EntryTypes = "Hospital" | "OccupationalHealthcare" | "HealthCheck";
+export const entryTypeToName = (type: EntryTypes): string => {
+  switch (type) {
+    case 'HealthCheck':
+      return 'health check';
+    case 'Hospital':
+      return 'hospital';
+    case 'OccupationalHealthcare':
+      return 'occupational healthcare';
+  }
+};
 
 export type NewPatient = Omit<Patient, 'id'>;
 
